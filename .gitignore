@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 数据与产物（按需删减）
+*.pt
+history.json
+figures/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# VS Code 个人配置（保留 .vscode/ 可删除此条）
+.vscode/*
+!.vscode/settings.json
+
+# 密钥
+.env
+*.key
