@@ -1,4 +1,23 @@
-from openai import OpenAI
+from langchain.chat_models import init_chat_model
+from langchain.agents import create_agent
+from langchain_core.messages import SystemMessage, HumanMessage
 import os
-import dotenv
-dotenv.load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
+models = init_chat_model(
+    model = 'qwen3.5-plus',
+    model_provider = 'openai',
+    api_key = 'sk-ws-H.YXRHELY.NALT.MEUCIDyYXSKnFlOgqPa3Z40H-PgcHfYueTiWXTSQnfc3JT53AiEAu3zy4MdbahEkyLwXQ0mH2ysTcxgMCIprb3Z4xTtP3z8',
+    base_url = 'https://maas.qianwenaiapi.com/compatible-mode/v1'
+)
+agent = create_agent(
+    model = models,
+    system_prompt = "You are a helpful assistant.",
+)
+response = agent.stream({
+    'message' :[SystemMessage(content="You are a helpful assistant."),
+    HumanMessage(content="Hello, how are you?")]},
+    stream_mode = 'messages'
+   )
+for token,metdata in response:
+    print(token.content, end="",flush=True)
