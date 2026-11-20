@@ -1,0 +1,16 @@
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
+load_dotenv()
+client =  OpenAI(
+    api_key = "sk-ws-H.YXRHELY.NALT.MEUCIDyYXSKnFlOgqPa3Z40H-PgcHfYueTiWXTSQnfc3JT53AiEAu3zy4MdbahEkyLwXQ0mH2ysTcxgMCIprb3Z4xTtP3z8",
+    base_url = "https://maas.qianwenaiapi.com/compatible-mode/v1"
+)
+r = client.chat.completions.create(
+    model="qwen3.8-flash",
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Write a poem about the ocean."}]
+
+)
+print(r.choices[0].message.content)
