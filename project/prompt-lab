@@ -1,23 +1,22 @@
-from langchain.chat_models import init_chat_model
-from langchain.agents import create_agent
-from langchain_core.messages import SystemMessage, HumanMessage
+from openai import OpenAI
 import os
-from dotenv import load_dotenv
-load_dotenv()
-models = init_chat_model(
-    model = 'qwen3.5-plus',
-    model_provider = 'openai',
-    api_key = 'sk-ws-H.YXRHELY.NALT.MEUCIDyYXSKnFlOgqPa3Z40H-PgcHfYueTiWXTSQnfc3JT53AiEAu3zy4MdbahEkyLwXQ0mH2ysTcxgMCIprb3Z4xTtP3z8',
-    base_url = 'https://maas.qianwenaiapi.com/compatible-mode/v1'
+import json
+client = OpenAI(
+    api_key = 'YOUR_API_KEY',
+    base_url = 'BASE_URL'
 )
-agent = create_agent(
-    model = models,
-    system_prompt = "You are a helpful assistant.",
-)
-response = agent.stream({
-    'message' :[SystemMessage(content="You are a helpful assistant."),
-    HumanMessage(content="Hello, how are you?")]},
-    stream_mode = 'messages'
-   )
-for token,metdata in response:
-    print(token.content, end="",flush=True)
+Question = '你觉得人工智能会取代人类吗？'
+prompt = {
+    "role1":Question,
+    "role2":"你是一个小学生，请回这个问题" + Question,
+    "role3":"你是一个资深的人工智能专家，请回答这个问题"+Question,
+}
+results = {}
+for name, p in prompt.items():
+    r = client.chat.completions.create(
+        model = "qwen3.8-flash",
+        messages = [{"role":"user","content":p}],temperature=0.3)
+    results[name] = r.choices[0].message.content
+with open("results.json", "w", encoding="utf-8") as f:
+    json.dump(results, f, ensure_ascii=False, indent=2)
+print("已保存 results.json")
