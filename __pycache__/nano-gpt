@@ -10,7 +10,7 @@ r = client.chat.completions.create(
     model="qwen3.8-flash",
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Write a poem about the ocean."}]
+        {"role": "user", "content": "Who am I?"}]
 
 )
 print(r.choices[0].message.content)
